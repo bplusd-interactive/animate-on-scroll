@@ -6,7 +6,8 @@
   "typings": "./dist/index.d.ts",
   "scripts": {
     "prepublish": "npm run build",
-    "build": "ngc"
+    "build": "ngc",
+    "lint": "tslint --project tsconfig.json"
   },
   "repository": {
     "type": "git",
