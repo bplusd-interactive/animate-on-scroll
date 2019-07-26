@@ -16,14 +16,14 @@ export class ScrollService implements OnDestroy {
     this.manageScrollPos();
 
     // create observable that we can subscribe to from component or directive
-    this.scrollObs = typeof window !== 'undefined' ? fromEvent(window, 'scroll') : empty();
+    this.scrollObs = typeof <any>window !== 'undefined' ? fromEvent(window, 'scroll') : empty();
 
     // initiate subscription to update values
     this.scrollSub = this.scrollObs
       .subscribe(() => this.manageScrollPos());
 
     // create observable for changes in screen size
-    this.resizeObs = typeof window !== 'undefined' ? fromEvent(window, 'resize') : empty();
+    this.resizeObs = typeof <any>window !== 'undefined' ? fromEvent(window, 'resize') : empty();
 
     // initiate subscription to update values
     this.resizeSub = this.resizeObs
@@ -35,8 +35,8 @@ export class ScrollService implements OnDestroy {
   private manageScrollPos(): void {
 
     // update service property
-    this.pos = typeof window !== 'undefined' ? window.pageYOffset : 0;
-
+    // this.pos = typeof window !== 'undefined' ? window.pageYOffset : 0;
+    this.pos = typeof <any>window !== 'undefined' ? (<any>window).DATA.scrollposition : 0; // tslint:disable-line
   }
 
   ngOnDestroy(): void {
