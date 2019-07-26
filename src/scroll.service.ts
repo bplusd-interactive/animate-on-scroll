@@ -16,7 +16,13 @@ export class ScrollService implements OnDestroy {
     this.manageScrollPos();
 
     // create observable that we can subscribe to from component or directive
-    this.scrollObs = typeof <any>window !== 'undefined' ? fromEvent(window, 'scroll') : empty();
+    let eventType = 'scroll';
+
+    if(this.inIframe()){
+      eventType = 'message';
+    }
+
+    this.scrollObs = typeof <any>window !== 'undefined' ? fromEvent(window, eventType) : empty();
 
     // initiate subscription to update values
     this.scrollSub = this.scrollObs
@@ -35,8 +41,19 @@ export class ScrollService implements OnDestroy {
   private manageScrollPos(): void {
 
     // update service property
-    // this.pos = typeof window !== 'undefined' ? window.pageYOffset : 0;
-    this.pos = typeof <any>window !== 'undefined' ? (<any>window).DATA.scrollposition : 0; // tslint:disable-line
+    if(this.inIframe()){
+      this.pos = typeof <any>window !== 'undefined' ? (<any>window).DATA.scrollposition : 0; // tslint:disable-line
+    } else{
+      this.pos = typeof window !== 'undefined' ? window.pageYOffset : 0;
+    }
+  }
+
+  private inIframe () {
+    try {
+      return window.self !== window.top;
+    } catch (e) {
+      return true;
+    }
   }
 
   ngOnDestroy(): void {

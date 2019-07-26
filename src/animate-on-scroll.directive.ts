@@ -50,6 +50,14 @@ export class AnimateOnScrollDirective implements OnInit, OnDestroy, AfterViewIni
     this.resizeSub.unsubscribe();
   }
 
+  private inIframe () {
+    try {
+      return window.self !== window.top;
+    } catch (e) {
+      return true;
+    }
+  }
+
   /**
    * check for visibility of element in viewport to add animation
    *
@@ -114,8 +122,11 @@ export class AnimateOnScrollDirective implements OnInit, OnDestroy, AfterViewIni
    */
   private getWinHeight(): void {
 
-    this.winHeight = typeof <any>window !== 'undefined' ?  (<any>window).DATA.windowinnerheight : 0;  // tslint:disable-line
-
+    if(this.inIframe()){
+      this.winHeight = typeof <any>window !== 'undefined' ?  (<any>window).DATA.windowinnerheight : 0;  // tslint:disable-line
+    } else {
+      this.winHeight = typeof window !== 'undefined' ?  window.innerHeight : 0;
+    }
   }
 
   /**
@@ -125,7 +136,14 @@ export class AnimateOnScrollDirective implements OnInit, OnDestroy, AfterViewIni
    */
   private getOffsetTop(): void {
     if (typeof this.elementRef.nativeElement.getBoundingClientRect === 'function') {
-      const viewportTop = this.elementRef.nativeElement.getBoundingClientRect().top;
+      let viewp = 0;
+
+      if(this.inIframe()){
+        viewp = this.elementRef.nativeElement.getBoundingClientRect().top - (<any>window).DATA.scrollposition;
+      } else {
+        viewp = this.elementRef.nativeElement.getBoundingClientRect().top;
+      }
+      const viewportTop = viewp;
       const clientTop = this.elementRef.nativeElement.clientTop;
 
       // get vertical position for selected element
@@ -133,7 +151,5 @@ export class AnimateOnScrollDirective implements OnInit, OnDestroy, AfterViewIni
     } else {
       this.offsetTop = 0
     }
-
   }
-
 }

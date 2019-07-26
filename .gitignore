@@ -2,6 +2,9 @@
 node_modules/*
 npm-debug.log
 
+## do not try to build. It'll break dist
+package.json
+
 # TypeScript
 
 # JetBrains
