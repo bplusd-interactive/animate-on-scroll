@@ -6,8 +6,7 @@
   "typings": "./dist/index.d.ts",
   "scripts": {
     "prepublish": "npm run build",
-    "build": "ngc",
-    "lint": "tslint --project tsconfig.json"
+    "build": "ngc"
   },
   "repository": {
     "type": "git",
@@ -44,7 +43,6 @@
     "js": "^0.1.0",
     "rxjs": "^6.2.2",
     "rxjs-compat": "^6.2.2",
-    "tslint": "~5.7.0",
     "typescript": "~2.4.2",
     "zone.js": "^0.8.14"
   }
