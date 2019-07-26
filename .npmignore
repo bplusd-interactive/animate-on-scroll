@@ -27,11 +27,11 @@ Desktop.ini
 **/.DS_Store
 
 #tslint
-tslint.json
+#tslint.json
 
 # ignore src files
-src/
-index.ts
+#src/
+#index.ts
 
 # ignore compiles files
 /compiled
